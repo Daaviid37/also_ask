@@ -91,12 +91,14 @@ def get_answer(question: str) -> Dict[str, Any]:
             has_answer=False,
             question=question,
             related_questions=related_questions,
+            html_content=featured_snippet.html_content
         )
     else:
         res = dict(
             has_answer=True,
             question=question,
             related_questions=related_questions,
+            html_content=featured_snippet.html_content
         )
         try:
             res.update(featured_snippet.to_dict())
