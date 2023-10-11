@@ -84,27 +84,31 @@ def get_answer(question: str) -> Dict[str, Any]:
     """
     document = search(question)
     related_questions = extract_related_questions(document)
-    featured_snippet = get_featured_snippet_parser(
-            question, document)
+    featured_snippet = get_featured_snippet_parser(question, document)
+
+    # Inicializa el diccionario con valores comunes
+    res = dict(
+        question=question,
+        related_questions=related_questions,
+    )
+
     if not featured_snippet:
-        res = dict(
-            has_answer=False,
-            question=question,
-            related_questions=related_questions,
-            html_content=featured_snippet.html_content
-        )
+        res.update({
+            "has_answer": False,
+            "html_content": None  # Establece html_content como None si no hay featured_snippet
+        })
     else:
-        res = dict(
-            has_answer=True,
-            question=question,
-            related_questions=related_questions,
-            html_content=featured_snippet.html_content
-        )
+        res.update({
+            "has_answer": True,
+            "html_content": featured_snippet.html_content
+        })
         try:
             res.update(featured_snippet.to_dict())
         except Exception:
             raise FeaturedSnippetParserError(question)
+
     return res
+
 
 
 def generate_answer(text: str) -> Generator[dict, None, None]:
