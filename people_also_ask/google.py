@@ -14,12 +14,12 @@ from people_also_ask.exceptions import (
 from people_also_ask.request import get
 
 
-URL = "https://www.google.com/search"
+URL = "https://www.google.es/search"
 
 
 def search(keyword: str) -> Optional[BeautifulSoup]:
     """return html parser of google search result"""
-    params = {"q": keyword, "gl": "us"}
+    params = {"q": keyword, "gl": "es"}
     response = get(URL, params=params)
     return BeautifulSoup(response.text, "html.parser")
 
