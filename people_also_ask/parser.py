@@ -70,6 +70,9 @@ class FeaturedSnippetParser(object):
         raise AttributeError(f'{self.__class__.__name__}.{attr} is invalid.')
 
     @property
+    def html_content(self):
+        return str(self.tag) 
+            
     def raw_text(self):
         return get_raw_text(self.tag)
 
