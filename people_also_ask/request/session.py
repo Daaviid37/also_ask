@@ -13,6 +13,13 @@ from requests import Session as _Session
 
 
 SESSION = _Session()
+#PROXYS
+proxy_dict = {
+    'http': 'http://MEzC3gIqJz:u8fFNx8ggW@193.26.152.113:58542',
+    'https': 'https://MEzC3gIqJz:u8fFNx8ggW@193.26.152.113:58542'
+}
+SESSION.proxies.update(proxy_dict)
+
 NB_TIMES_RETRY = os.environ.get(
     "RELATED_QUESTION_NB_TIMES_RETRY", 3
 )
