@@ -3,26 +3,23 @@ import logging
 import requests
 import traceback
 import random
-import time
-
 from people_also_ask.tools import retryable
 from itertools import cycle
 from typing import Optional
+from threading import Semaphore
 from people_also_ask.tools import CallingSemaphore
 from people_also_ask.exceptions import RequestError
 
 from requests import Session as _Session
-
-# Importaciones adicionales
 from random import choice
 
 SESSION = _Session()
-HEADERS = {}
 NB_TIMES_RETRY = os.environ.get("RELATED_QUESTION_NB_TIMES_RETRY", 3)
 NB_REQUESTS_LIMIT = os.environ.get("RELATED_QUESTION_NB_REQUESTS_LIMIT", 25)
 NB_REQUESTS_DURATION_LIMIT = os.environ.get("RELATED_QUESTION_NB_REQUESTS_DURATION_LIMIT", 60)  # seconds
 
 logging.basicConfig()
+semaphore = Semaphore(1)
 
 # 2. Lista de cabezales de navegador (User-Agents)
 USER_AGENTS = [
@@ -52,8 +49,6 @@ def set_headers(headers):
     global HEADERS
     HEADERS.update(headers)
 
-
-# Función para obtener un cabezal de navegador aleatorio
 def get_random_user_agent():
     return choice(USER_AGENTS)
 
@@ -82,7 +77,6 @@ class ProxyGeneator:
             "https": proxy
         }
 
-
 def _load_proxies() -> Optional[tuple]:
     filepath = os.getenv("PAA_PROXY_FILE")
     if filepath:
@@ -92,11 +86,9 @@ def _load_proxies() -> Optional[tuple]:
         proxies = None
     return proxies
 
-
 def set_proxies(proxies: Optional[tuple]) -> ProxyGeneator:
     global PROXY_GENERATORS
     PROXY_GENERATORS = ProxyGeneator(proxies=proxies)
-
 
 set_proxies(proxies=_load_proxies())
 
@@ -104,16 +96,14 @@ set_proxies(proxies=_load_proxies())
 def get(url: str, params) -> requests.Response:
     proxies = PROXY_GENERATORS.get()
     try:
-        # Se elimina la línea "with semaphore:"
-        # 3. Modificación para usar el cabezal aleatorio
-        response = SESSION.get(
-            url,
-            params=params,
-            headers={"User-Agent": get_random_user_agent()},
-            proxies=proxies,
-        )
-        # Añadir un tiempo de espera aleatorio entre peticiones
-        time.sleep(random.uniform(10, 45))
+        with semaphore:
+            response = SESSION.get(
+                url,
+                params=params,
+                headers={"User-Agent": get_random_user_agent()},
+                proxies=proxies,
+            )
+            time.sleep(random.uniform(10, 45))
     except Exception:
         raise RequestError(
             url, params, proxies, traceback.format_exc()
