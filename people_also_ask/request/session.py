@@ -104,16 +104,16 @@ set_proxies(proxies=_load_proxies())
 def get(url: str, params) -> requests.Response:
     proxies = PROXY_GENERATORS.get()
     try:
-        with semaphore:
-            # 3. Modificación para usar el cabezal aleatorio
-            response = SESSION.get(
-                url,
-                params=params,
-                headers={"User-Agent": get_random_user_agent()},
-                proxies=proxies,
-            )
-            # Añadir un tiempo de espera aleatorio entre peticiones
-            time.sleep(random.uniform(10, 45))
+        # Se elimina la línea "with semaphore:"
+        # 3. Modificación para usar el cabezal aleatorio
+        response = SESSION.get(
+            url,
+            params=params,
+            headers={"User-Agent": get_random_user_agent()},
+            proxies=proxies,
+        )
+        # Añadir un tiempo de espera aleatorio entre peticiones
+        time.sleep(random.uniform(10, 45))
     except Exception:
         raise RequestError(
             url, params, proxies, traceback.format_exc()
