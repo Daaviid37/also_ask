@@ -13,10 +13,11 @@ from people_also_ask.exceptions import RequestError
 
 from requests import Session as _Session
 
-# 1. Importaciones adicionales
+# Importaciones adicionales
 from random import choice
 
 SESSION = _Session()
+HEADERS = {}
 NB_TIMES_RETRY = os.environ.get("RELATED_QUESTION_NB_TIMES_RETRY", 3)
 NB_REQUESTS_LIMIT = os.environ.get("RELATED_QUESTION_NB_REQUESTS_LIMIT", 25)
 NB_REQUESTS_DURATION_LIMIT = os.environ.get("RELATED_QUESTION_NB_REQUESTS_DURATION_LIMIT", 60)  # seconds
