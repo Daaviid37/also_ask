@@ -12,7 +12,7 @@ from people_also_ask.exceptions import RequestError
 
 from requests import Session as _Session
 from random import choice
-
+HEADERS = {}
 SESSION = _Session()
 NB_TIMES_RETRY = os.environ.get("RELATED_QUESTION_NB_TIMES_RETRY", 3)
 NB_REQUESTS_LIMIT = os.environ.get("RELATED_QUESTION_NB_REQUESTS_LIMIT", 25)
