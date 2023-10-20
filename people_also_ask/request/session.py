@@ -2,6 +2,7 @@ import os
 import logging
 import requests
 import traceback
+import time
 import random
 from people_also_ask.tools import retryable
 from itertools import cycle
