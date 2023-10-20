@@ -17,10 +17,10 @@ URL = "https://www.google.es/search"
 
 def search(keyword: str) -> Optional[BeautifulSoup]:
     """return html parser of google search result"""
-    # Use the cache URL directly, no need for params in this case
     full_url = URL_BASE_CACHE + URL + "?q=" + keyword + "&gl=es"
-    response = get(full_url)
+    response = get(full_url)  # No pasamos params ya que la URL completa se define en full_url
     return BeautifulSoup(response.text, "html.parser")
+
 
 
 
