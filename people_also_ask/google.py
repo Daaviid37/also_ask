@@ -2,7 +2,6 @@
 import sys
 from bs4 import BeautifulSoup
 from typing import List, Dict, Any, Optional, Generator
-URL_BASE_CACHE = "http://webcache.googleusercontent.com/search?q=cache:"
 
 from people_also_ask.parser import (
     extract_related_questions,
@@ -20,10 +19,9 @@ URL = "https://www.google.es/search"
 
 def search(keyword: str) -> Optional[BeautifulSoup]:
     """return html parser of google search result"""
-    params = {"q": URL + "?q=" + keyword, "gl": "es"}  # Modifica los parámetros para usar la URL completa
-    response = get(URL_BASE_CACHE, params=params)
+    params = {"q": keyword, "gl": "es"}
+    response = get(URL, params=params)
     return BeautifulSoup(response.text, "html.parser")
-
 
 
 def _get_related_questions(text: str) -> List[str]:
