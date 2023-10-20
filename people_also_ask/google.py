@@ -12,20 +12,16 @@ from people_also_ask.exceptions import (
     FeaturedSnippetParserError
 )
 from people_also_ask.request import get
-URL_BASE_CACHE = "http://webcache.googleusercontent.com/search?q=cache:"
+
+
 URL = "https://www.google.es/search"
 
-import requests
 
 def search(keyword: str) -> Optional[BeautifulSoup]:
     """return html parser of google search result"""
-    full_url = URL_BASE_CACHE + URL + "?q=" + keyword + "&gl=es"
-    response = requests.get(full_url)  # Utilizamos la función get de requests
+    params = {"q": keyword, "gl": "es"}
+    response = get(URL, params=params)
     return BeautifulSoup(response.text, "html.parser")
-
-
-
-
 
 
 def _get_related_questions(text: str) -> List[str]:
