@@ -47,6 +47,10 @@ USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:60.0) Gecko/20100101 Firefox/60.0",
 ]
 
+def set_headers(headers):
+    global HEADERS
+    HEADERS.update(headers)
+
 
 # Función para obtener un cabezal de navegador aleatorio
 def get_random_user_agent():
