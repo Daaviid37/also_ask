@@ -1,5 +1,7 @@
 #! /usr/bin/env python3
-from people_also_ask.session import set_headers
+from .request.session import set_headers
+from .google import get_related_questions, get_answer
+
 
 from people_also_ask.google import (
     get_answer,
