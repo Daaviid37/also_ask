@@ -1,5 +1,5 @@
 #! /usr/bin/env python3
-from people_also_ask.request.session import set_headers
+
 from people_also_ask.google import (
     get_answer,
     generate_answer,
