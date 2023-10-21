@@ -82,15 +82,14 @@ class ProxyGeneator:
             self._iter_proxy = cycle(self.proxies)
         return self._iter_proxy
 
+
     def get(self) -> dict:
-        if not self.proxies:
-            return {}
-        proxy = next(self.iter_proxy)
-        if not proxy.startswith("https"):
-            proxy = f"http://{proxy}"
-        return {
-            "https": proxy
-        }
+    if not self.proxies:
+        return {}
+    proxy = next(self.iter_proxy)
+    return {
+        "https": proxy
+    }
 
 PROXY_GENERATORS = ProxyGeneator(proxies=PROXY_LIST)
 
