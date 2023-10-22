@@ -48,15 +48,28 @@ class ProxyGeneator:
             self._iter_proxy = cycle(self.proxies)
         return self._iter_proxy
 
+class ProxyGeneator:
+
+    def __init__(self, proxies: Optional[tuple]):
+        self.proxies = proxies
+
+    @property
+    def iter_proxy(self):
+        if not self.proxies:
+            raise ValueError("No proxy found")
+        if getattr(self, "_iter_proxy", None) is None:
+            self._iter_proxy = cycle(self.proxies)
+        return self._iter_proxy
+
     def get(self) -> dict:
         if not self.proxies:
             return {}
         proxy = next(self.iter_proxy)
-        if not proxy.startswith("https"):
-            proxy = f"http://{proxy}"
         return {
+            "http": proxy,
             "https": proxy
         }
+
 
 
 def _load_proxies() -> Optional[tuple]:
