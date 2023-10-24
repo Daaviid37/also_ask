@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 import sys
+import random
 from bs4 import BeautifulSoup
 from typing import List, Dict, Any, Optional, Generator
 
@@ -19,9 +20,13 @@ URL = "https://www.google.es/search"
 
 def search(keyword: str) -> Optional[BeautifulSoup]:
     """return html parser of google search result"""
+    # Alterna entre los dominios de forma aleatoria
+    URL = random.choice(["https://www.google.es/search", "https://www.google.com/search"])
+
     params = {"q": keyword, "gl": "es"}
     response = get(URL, params=params)
     return BeautifulSoup(response.text, "html.parser")
+
 
 
 def _get_related_questions(text: str) -> List[str]:
